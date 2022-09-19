@@ -4,7 +4,7 @@
 int *readArray(int n)
 {
     int *a = malloc(sizeof(int) * n);
-    if(a == NULL) // checks if there is memory space enough
+    if(a == NULL) // checks if there is available memory
     {
         printf("INSUFFICIENT MEMORY\n");
     }
@@ -15,23 +15,6 @@ int *readArray(int n)
         a[i] = x;
     }
     return a;
-}
-
-int inOrder(int a[], int n) // checks if the array is in order
-{
-    for(int i = 0; i < n - 1; i++)
-    {
-        if (a[i] > a[i + i])
-        {
-            return 0;
-        }
-    }
-    return 1;
-
-    for(int i = 0; i < n; i++)
-    {
-        printf("%d", a[i]);
-    }
 }
 
 void destroyArray(int *a)
@@ -57,11 +40,11 @@ void insertionSort(int a[], int n)
 
 void printArray(int a[], int n)
 {
-  for (int i = 0; i < n; ++i)
-  {
-    printf("%d ", a[i]);
-  }
-  printf("\n");
+    for (int i = 0; i < n; ++i)
+    {
+        printf("%d ", a[i]);
+    }
+    printf("\n");
 }
 
 int main(int argc, char *argv[])
@@ -71,18 +54,9 @@ int main(int argc, char *argv[])
 
     int *a = readArray(n); // allocation method
 
-    printArray(a, n);
-    
-    if(inOrder(a, n))
-    {
-        printf("it's in order\n");
-    }else
-    {
-        printf("it isn't in order\n");
-    }
-
     insertionSort(a, n);
-
+    
+    printf("array in order: ");
     printArray(a, n);
     
     destroyArray(a);
