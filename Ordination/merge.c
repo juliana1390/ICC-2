@@ -1,10 +1,36 @@
 #include<stdio.h>
 #include<stdlib.h>
 
+int *readArray(int n);
+void destroyArray(int *array);
+void _merge2Arrays(int array[], int start1, int end1, int start2, int end2, int b[]);
+void _merge(int array[], int start, int end, int b[]);
+void mergeSort(int array[], int n);
+void printArray(int array[], int n);
+
+
+
+int main(int argc, char *argv[])
+{
+    int n; // size of array
+    scanf("%d", &n);
+
+    int *array = readArray(n); // allocation method   
+
+    mergeSort(array, n);
+
+    printf("array in order: ");
+    printArray(array, n);
+
+    destroyArray(array);
+
+    exit(0);
+}
+
 int *readArray(int n)
 {
-    int *a = malloc(sizeof(int) * n);
-    if(a == NULL) // checks if there is available memory
+    int *array = malloc(sizeof(int) * n);
+    if(array == NULL) // checks if there is available memory
     {
         printf("INSUFFICIENT MEMORY\n");
     }
@@ -12,17 +38,17 @@ int *readArray(int n)
     {
         int x;
         scanf("%d", &x);
-        a[i] = x;
+        array[i] = x;
     }
-    return a;
+    return array;
 }
 
-void destroyArray(int *a)
+void destroyArray(int *array)
 {
-    free(a);
+    free(array);
 }
 
-void _merge2Arrays(int a[], int start1, int end1, int start2, int end2, int b[])
+void _merge2Arrays(int array[], int start1, int end1, int start2, int end2, int temp[])
 {
     int i1 = start1;
     int i2 = start2;
@@ -30,15 +56,15 @@ void _merge2Arrays(int a[], int start1, int end1, int start2, int end2, int b[])
 
     while (i1 <= end1 && i2 <= end2)
     {
-        if (a[i1] <= a[i2])
+        if (array[i1] <= array[i2])
         {
-            b[j] = a[i1];
+            temp[j] = array[i1];
             j++;
             i1++;
         }
         else
         {
-            b[j] = a[i2];
+            temp[j] = array[i2];
             j++;
             i2++;
         }            
@@ -46,14 +72,14 @@ void _merge2Arrays(int a[], int start1, int end1, int start2, int end2, int b[])
 
     while(i1 <= end1)
     {
-        b[j] = a[i1];
+        temp[j] = array[i1];
         j++;
         i1++;
     }
 
     while(i2 <= end2)
     {
-        b[j] = a[i2];
+        temp[j] = array[i2];
         j++;
         i2++;
     }
@@ -62,11 +88,11 @@ void _merge2Arrays(int a[], int start1, int end1, int start2, int end2, int b[])
     
     for(int i = start1; i <= end2; i++, j++) // joins the two arrays and takes the elements to the array a[i]
     {
-        a[i] = b[j];
+        array[i] = temp[j];
     }
 }
 
-void _merge(int a[], int start, int end, int b[])
+void _merge(int array[], int start, int end, int temp[])
 {
     // base case
     if(start >= end)
@@ -75,47 +101,30 @@ void _merge(int a[], int start, int end, int b[])
     }
 
     int middle = ((start + end) / 2);
-    _merge(a, start, middle, b); // from start to middle, using b as temp
-    _merge(a, middle + 1, end, b); // from middle + 1 to end, using b as temp
-    _merge2Arrays(a, start, middle, middle + 1, end, b); // from start to middle, from middle + 1 to end, using b as temp
+    _merge(array, start, middle, temp); // from start to middle, using b as temp
+    _merge(array, middle + 1, end, temp); // from middle + 1 to end, using b as temp
+    _merge2Arrays(array, start, middle, middle + 1, end, temp); // from start to middle, from middle + 1 to end, using b as temp
 }
 
-void mergeSort(int a[], int n)
+void mergeSort(int array[], int n)
 {
-    int *b = malloc(sizeof(int) * n);
-    if(b == NULL)
+    int *temp = malloc(sizeof(int) * n);
+    if(temp == NULL)
     {
         printf("INSUFFICIENT MEMORY\n");
         exit(-1);
     }
 
-    _merge(a, 0, n - 1, b);
+    _merge(array, 0, n - 1, temp);
 
-    free(b);
+    free(temp);
 }
 
-void printArray(int a[], int n)
+void printArray(int array[], int n)
 {
   for (int i = 0; i < n; ++i)
   {
-    printf("%d ", a[i]);
+    printf("%d ", array[i]);
   }
   printf("\n");
-}
-
-int main(int argc, char *argv[])
-{
-    int n; // size of array
-    scanf("%d", &n);
-
-    int *a = readArray(n); // allocation method   
-
-    mergeSort(a, n);
-
-    printf("array in order: ");
-    printArray(a, n);
-
-    destroyArray(a);
-
-    exit(0);
 }
