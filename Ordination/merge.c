@@ -3,8 +3,8 @@
 
 int *readArray(int n);
 void destroyArray(int *array);
-void _merge2Arrays(int array[], int start1, int end1, int start2, int end2, int b[]);
-void _merge(int array[], int start, int end, int b[]);
+void _merge2Arrays(int array[], int start1, int end1, int start2, int end2, int temp[]);
+void _merge(int array[], int start, int end, int temp[]);
 void mergeSort(int array[], int n);
 void printArray(int array[], int n);
 
